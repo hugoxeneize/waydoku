@@ -99,7 +99,7 @@ local function render_separators()
         local _, y2 = cell_xy(row + 1, 1)
         local sy = y1 + math.floor((y2 - y1) / 2)
         -- separator
-        local sep = "- - + - - + - - "
+        local sep = "- - +- - +- - "
         table.insert(sep_handles, waywall.text(sep, {
             x = cfg.x, y = sy, size = cfg.size, color = "#888899"
         }))
