@@ -66,7 +66,7 @@ local cfg = {
 }
 ```
 
-set options_txt to your instance's options.txt path to use your Minecraft keybindings automatically. in Prism Launcher: right click your instance → Folder → open .minecraft/ and copy the full path. if nil, defaults to wasd.
+if you're using prism launcher with the ranked instance it auto-detects, otherwise you can set it manually, right click your instance → Folder → open .minecraft/ and copy the full path. if nil, defaults to wasd
 
 tweak `x` and `y` to move the grid wherever you want on your screen. `size` controls how big everything is — 3 is a good default for 1366x768.
 
