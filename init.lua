@@ -60,6 +60,22 @@ local KEYS = {
 	reset_options = { "r", "n", "p", "m" },
 }
 
+local function find_options_txt()
+	local home = os.getenv("HOME")
+	if not home then
+		return nil
+	end
+	local prism_base = home .. "/.local/share/PrismLauncher/instances"
+	local handle =
+		io.popen('find "' .. prism_base .. '" -maxdepth 3 -name "options.txt" 2>/dev/null | grep -i "ranked" | head -1')
+	if not handle then
+		return nil
+	end
+	local result = handle:read("*l")
+	handle:close()
+	return (result ~= "" and result) or nil
+end
+
 local function read_options_txt(path)
 	local file = io.open(path, "r")
 	if not file then
@@ -436,8 +452,9 @@ M.setup = function(config)
 		math.random()
 	end
 
-	if cfg.options_txt then
-		read_options_txt(cfg.options_txt)
+	local path = cfg.options_txt or find_options_txt()
+	if path then
+		read_options_txt(path)
 	end
 
 	for _, possible_key in ipairs(KEYS.reset_options) do
