@@ -57,7 +57,7 @@ local KEYS = {
 	right = "d",
 	hotbar = { "1", "2", "3", "4", "5", "6", "7", "8", "9" },
 	reset = "r",
-	reset_options = {"r", "n", "p", "m"}
+	reset_options = { "r", "n", "p", "m" },
 }
 
 local function read_options_txt(path)
@@ -84,7 +84,7 @@ local function read_options_txt(path)
 			["up"] = "Up",
 			["down"] = "Down",
 		}
-		return special[key] or key
+		return (special[key] or key):lower()
 	end
 
 	for line in file:lines() do
@@ -177,7 +177,7 @@ local function render_separators()
 		local _, y1 = cell_xy(row, 1)
 		local _, y2 = cell_xy(row + 1, 1)
 		local sy = y1 + math.floor((y2 - y1) / 2)
-		local sep = "- - - - - - + - - - - - - + - - - - - -"
+		local sep = "- - + - -+ - -"
 		table.insert(
 			sep_handles,
 			waywall.text(sep, {
@@ -431,34 +431,36 @@ local function toggle()
 end
 
 M.setup = function(config)
-    math.randomseed(os.time())
-    for i=1,3 do math.random() end
+	math.randomseed(os.time())
+	for i = 1, 3 do
+		math.random()
+	end
 
-    if cfg.options_txt then
-        read_options_txt(cfg.options_txt)
-    end
+	if cfg.options_txt then
+		read_options_txt(cfg.options_txt)
+	end
 
-    for _, possible_key in ipairs(KEYS.reset_options) do
-        local is_conflict = false
-        for _, hk in ipairs(KEYS.hotbar) do
-            if possible_key == hk:lower() then
-                is_conflict = true
-                break
-            end
-        end
-        
-        if not is_conflict then
-            KEYS.reset = possible_key
-            print("[waydoku] reset key set to: " .. KEYS.reset)
-            break
-        end
-    end
+	for _, possible_key in ipairs(KEYS.reset_options) do
+		local is_conflict = false
+		for _, hk in ipairs(KEYS.hotbar) do
+			if possible_key == hk:lower() then
+				is_conflict = true
+				break
+			end
+		end
 
-    sudoku_on = false
-    setup_keys(config)
-    config.actions[cfg.start_key] = function()
-        toggle()
-    end
+		if not is_conflict then
+			KEYS.reset = possible_key
+			print("[waydoku] reset key set to: " .. KEYS.reset)
+			break
+		end
+	end
+
+	sudoku_on = false
+	setup_keys(config)
+	config.actions[cfg.start_key] = function()
+		toggle()
+	end
 end
 
 return M

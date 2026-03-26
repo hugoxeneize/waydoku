@@ -62,8 +62,11 @@ local cfg = {
     size      = 3,        -- text size (bigger = larger grid)
     start_key = "F8",     -- hotkey to toggle waydoku on/off
     difficulty = "medium" -- "easy", "medium" or "hard"
+    options_txt = nil,    -- path to your minecraft options.txt
 }
 ```
+
+set options_txt to your instance's options.txt path to use your Minecraft keybindings automatically. in Prism Launcher: right click your instance → Folder → open .minecraft/ and copy the full path. if nil, defaults to wasd.
 
 tweak `x` and `y` to move the grid wherever you want on your screen. `size` controls how big everything is — 3 is a good default for 1366x768.
 
@@ -74,7 +77,7 @@ tweak `x` and `y` to move the grid wherever you want on your screen. `size` cont
 | key | action |
 |-----|--------|
 | `F8` | toggle waydoku on/off (or whatever you set as `start_key`) |
-| `w a s d` | move cursor around the grid |
+| `movement keys`| move cursor around the grid |
 | `1` - `9` | place a number in the selected cell |
 | `0` or `backspace` | erase the selected cell |
 | `r` | start a new game |
