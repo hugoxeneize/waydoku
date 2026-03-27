@@ -62,11 +62,13 @@ local cfg = {
     size      = 3,        -- text size (bigger = larger grid)
     start_key = "F8",     -- hotkey to toggle waydoku on/off
     difficulty = "medium" -- "easy", "medium" or "hard"
-    options_txt = nil,    -- path to your minecraft options.txt
+    options_txt = nil,    -- string path, nil = auto-detect, false = disable auto-detect
 }
 ```
 
-if you're using prism launcher with the ranked instance it auto-detects, otherwise you can set it manually, right click your instance → Folder → open .minecraft/ and copy the full path. if nil, defaults to wasd
+set `options_txt` manually by right clicking your prism instance → Folder → open `.minecraft/` and copy the full path.
+if `options_txt = nil`, it tries auto-detect (prism ranked instance) and falls back to wasd if nothing is found.
+if you want to force defaults and skip auto-detect, set `options_txt = false`.
 
 tweak `x` and `y` to move the grid wherever you want on your screen. `size` controls how big everything is — 3 is a good default for 1366x768.
 
