@@ -12,7 +12,9 @@ local cfg = {
 	difficulty = "medium", -- "easy", "medium", "hard"
 
 	-- path to your minecraft options.txt
-	-- set to nil to use default wasd + 1-9
+	-- string path: use that file
+	-- nil: auto-detect prism ranked instance, fallback to default wasd + 1-9
+	-- false: skip auto-detect and keep default wasd + 1-9
 	options_txt = nil,
 }
 
@@ -60,18 +62,28 @@ local KEYS = {
 	reset_options = { "r", "n", "p", "m" },
 }
 
+local function shell_escape(arg)
+	return "'" .. tostring(arg):gsub("'", "'\\''") .. "'"
+end
+
 local function find_options_txt()
 	local home = os.getenv("HOME")
-	if not home then
+	if not home or home == "" then
 		return nil
 	end
 	local prism_base = home .. "/.local/share/PrismLauncher/instances"
-	local handle =
-		io.popen('find "' .. prism_base .. '" -maxdepth 3 -name "options.txt" 2>/dev/null | grep -i "ranked" | head -1')
+	local cmd = "find " .. shell_escape(prism_base) .. " -maxdepth 3 -name options.txt 2>/dev/null"
+	local handle = io.popen(cmd)
 	if not handle then
 		return nil
 	end
-	local result = handle:read("*l")
+	local result = nil
+	for line in handle:lines() do
+		if line:lower():find("ranked", 1, true) then
+			result = line
+			break
+		end
+	end
 	handle:close()
 	return (result ~= "" and result) or nil
 end
@@ -452,8 +464,11 @@ M.setup = function(config)
 		math.random()
 	end
 
-	local path = cfg.options_txt or find_options_txt()
-	if path then
+	local path = cfg.options_txt
+	if path == nil then
+		path = find_options_txt()
+	end
+	if type(path) == "string" and path ~= "" then
 		read_options_txt(path)
 	end
 
